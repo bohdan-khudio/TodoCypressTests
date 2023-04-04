@@ -5,13 +5,11 @@ describe('login', () => {
   it('login with valid data', () => {
     
     cy.visit('/');
+    cy.intercept("/API/v9.0/user/login").as("loginRequest");
 
     loginPage.login("bahdan510@gmail.com", "SchoolLviv22");
 
-    // cy.intercept("POST", "/API/v9.0/user/login").as("loginRequest");
-    // cy.wait("@loginRequest");
-
-    cy.wait(20000);
+    cy.wait("@loginRequest");
 
     mainPage.getSetting().should("contain.text", "Settings");
 
