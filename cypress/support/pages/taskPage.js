@@ -6,6 +6,7 @@ export class TaskPage {
         deleteTaskButton: () => cy.contains('Delete task…'),
         sumbmitDeleteButton: () => cy.get('button[type="submit"]'),
         saveButton: () => cy.get('button[aria-label="Save"]'),
+        completeAlert: () => cy.get('div[class="a83bd4e0 _2a3b75a1"'),
 
     }
 
@@ -37,6 +38,15 @@ export class TaskPage {
 
     getTaskNameFild() {
         return this.elements.taskNameField();
+    }
+
+    clickCompleteButton() {
+        this.elements.completeButton().click();
+        return this;
+    }
+
+    getCompleteAlert() {
+        return this.elements.completeAlert();
     }
 
 }

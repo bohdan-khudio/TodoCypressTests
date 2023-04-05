@@ -1,4 +1,6 @@
 import { taskPage } from "./taskPage";
+import { addProjectPage } from "./addProjectPage";
+import { contextTaskMenu } from "./contextTaskMenu";
 export class MainPage {
 
     elements = {
@@ -9,7 +11,14 @@ export class MainPage {
         taskDescriptionField: () => cy.get('p[data-placeholder="Description"]'),
         saveTaskButton: () => cy.get('button[type="submit"]'),
         successAlert: () => cy.get('div[class="a83bd4e0 _2a3b75a1"]'),
-        task: () => cy.contains('Test task')
+        task: () => cy.contains('Test task'),
+        optionsButton: () => cy.get('button[aria-label="View options menu"]'),
+        sortingMenu: () => cy.get('#view_menu__sort_by'),
+        dueDateOption: () => cy.get('li[data-value="DUE_DATE"]'),
+        priorityOption: () => cy.get('li[data-value="PRIORITY"]'),
+        projectButton: () => cy.contains('Projects'),
+        addProjectButton: () => cy.get('button[aria-label="Add project"]'),
+
 
     }
 
@@ -42,6 +51,35 @@ export class MainPage {
     openTask() {
         this.elements.task().click();
         return taskPage;
+    }
+
+    clickOptionsButton() {
+        this.elements.optionsButton().click();
+        return this;
+    }
+
+    clickSortingMenu() {
+        this.elements.sortingMenu().click();
+        return this;
+    }
+
+    selectDueDateOption() {
+        this.elements.dueDateOption().click();
+    }
+
+    selectPriorityOption() {
+        this.elements.priorityOption().click();
+    }
+
+    clickAddProjectButton() {
+        this.elements.projectButton().trigger('mouseover');
+        this.elements.addProjectButton().click();
+        return addProjectPage;
+    }
+
+    contextClickTask() {
+        this.elements.task().rightclick();
+        return contextTaskMenu;
     }
 }
 

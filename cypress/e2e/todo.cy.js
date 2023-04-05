@@ -7,7 +7,7 @@ describe('to do', () => {
 
         cy.visit('/');
         cy.intercept('/API/v9.0/user/login').as('loginRequest');
-        loginPage.login('bahdan510@gmail.com', 'SchoolLviv22');
+        loginPage.login(Cypress.env('user').email, Cypress.env('user').password);
         cy.wait('@loginRequest');
 
     });
@@ -31,7 +31,7 @@ describe('to do', () => {
 
     });
 
-    it.only('edit task', () => {
+    it('edit task', () => {
 
         mainPage.openTask()
         .enterNewTaskName('Edited task')
@@ -40,4 +40,50 @@ describe('to do', () => {
         .should('have.text', 'Edited taskActivate to edit the task name');
 
     });
+
+    it('complete task', () => {
+
+        mainPage.openTask()
+        .clickCompleteButton()
+        .getCompleteAlert()
+        .should('have.text', '1 task completed');
+
+    });
+
+    it('sort by due date', () => {
+
+        mainPage.clickOptionsButton()
+        .clickSortingMenu()
+        .selectDueDateOption();
+
+    });
+
+    it('sort by priority', () => {
+
+        mainPage.clickOptionsButton()
+        .clickSortingMenu()
+        .selectPriorityOption();
+
+    });
+
+    it('create project', () => {
+
+        mainPage.clickAddProjectButton()
+        .fillProjectName('Test project')
+        .clickAddProjectButton()
+        .getProjectName()
+        .should('have.text', 'Test project(No Section)');
+
+    });
+
+    it('move task', () => {
+
+        mainPage.contextClickTask()
+        .clickMoveToProjectButton()
+        .selectHomeProject()
+        .getSuccessAlert()
+        .should('have.text', 'Task moved to Home ');
+
+    });
+
 });

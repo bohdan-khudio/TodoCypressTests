@@ -2,12 +2,16 @@ import { loginPage } from "../support/pages/loginPage"
 import { mainPage } from "../support/pages/mainPage";
 
 describe('login', () => {
-  it('login with valid data', () => {
-    
+
+  beforeEach(() => {
     cy.visit('/');
+  });
+
+  it('login with valid data', () => {
+
     cy.intercept("/API/v9.0/user/login").as("loginRequest");
 
-    loginPage.login("bahdan510@gmail.com", "SchoolLviv22");
+    loginPage.login(Cypress.env('user').email, Cypress.env('user').password);
 
     cy.wait("@loginRequest");
 
@@ -17,18 +21,17 @@ describe('login', () => {
 
   it('login with invalid data', () => {
 
-    cy.visit('/');
+    cy.intercept("/API/v9.0/user/login").as("loginRequest");
 
     loginPage.login("invalid@email.com", "invalidPassword");
     
-    cy.wait(10000);
+    cy.wait("@loginRequest");
 
     loginPage.getAlertMessage().should("have.text", "Wrong email or password.");
   });
 
 
   it('forgot password', () => {
-    cy.visit('/');
 
     loginPage.clickForgotPasswordButton()
     .resetPassword("bahdan510@gmail.com")
@@ -38,8 +41,6 @@ describe('login', () => {
   });
 
   it('create account', () => {
-
-    cy.visit('/');
 
     loginPage.clickSingUpButton()
     .createAccount("bahdan510@gmail.com", "SchoolLviv22")
